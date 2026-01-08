@@ -34,28 +34,28 @@ Funciona como un "hub" o centro de control que verifica en tiempo real el estado
 
 ### 1. Experiencia del Estudiante
 
-**Vista General de la Actividad**
+**Vista General de la Actividad:**
 Al ingresar a la actividad, el estudiante encuentra un panel con las 5 tarjetas correspondientes a las pruebas. Inicialmente, todas pueden estar en estado "No Iniciado".
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/7da5e66e-d2be-4ebf-b1d6-a04ec526709e" alt="Vista Estudiante Inicial" width="800">
 </p>
 
-**Progreso en Tiempo Real**
+**Progreso en Tiempo Real:**
 A medida que el estudiante avanza en las pruebas, el dashboard se actualiza. Los tests que están a medio camino muestran el estado "En Progreso" y un botón para continuar.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/990381a0-11de-482d-84ba-0e740763dd99" alt="Vista Estudiante En Progreso" width="800">
 </p>
 
-**Circuito Completado**
+**Circuito Completado:**
 Una vez finalizados todos los tests, el dashboard muestra el estado de éxito total. Esto dispara la finalización de la actividad en Moodle.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/cdc0647e-e17f-42e2-9d86-4e9ec006770b" alt="Vista Estudiante Completado" width="800">
 </p>
 
-**Vista desde el Curso**
+**Vista desde el Curso:**
 En la página principal del curso, la actividad muestra su estado de finalización.
 
 *Estado incompleto:*
@@ -70,21 +70,21 @@ En la página principal del curso, la actividad muestra su estado de finalizaci�
 
 ### 2. Configuración y Docencia
 
-**Selector de Actividad**
+**Selector de Actividad:**
 El módulo aparece en el selector de actividades de Moodle con su icono distintivo.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/9d280d09-22fb-4caa-add0-a78f03cca9b3" alt="Selector de Actividad" width="800">
 </p>
 
-**Opciones de Configuración**
+**Opciones de Configuración:**
 El docente puede configurar el nombre y la descripción. La sección crítica es "Finalización de actividad", donde se habilita la regla personalizada de manera predeterminada "Requerir todos los tests completados".
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/cdfa86d6-eadf-49e5-add9-d1e79bf490c9" alt="Opciones de Actividad" width="800">
 </p>
 
-**Vista del Profesor**
+**Vista del Profesor:**
 El docente ve una nota informativa con indicaciones claras de que esta herramienta es para el seguimiento del estudiante y puede ver el reporte completo en el Sistema Integral del Mapa de Identidad ([bloque student_path](https://github.com/ISCOUTB/student_path)).
 
 <p align="center">
