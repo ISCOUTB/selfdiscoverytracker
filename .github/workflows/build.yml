@@ -1,0 +1,102 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Code Validation
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        php-version: ['7.4', '8.0', '8.1', '8.2']
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+        extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, mysql, pgsql
+        coverage: xdebug
+    
+    - name: Validate PHP syntax
+      run: |
+        find . -name "*.php" -exec php -l {} \;
+    
+    - name: Check Moodle coding standards
+      run: |
+        # Verificar estructura básica de archivos Moodle
+        if [[ ! -f "version.php" ]]; then
+          echo "❌ version.php es requerido"
+          exit 1
+        fi
+        
+        # Validación específica para módulos de actividad
+        if [[ ! -f "lib.php" ]]; then
+          echo "❌ lib.php es requerido para módulos de actividad"
+          exit 1
+        fi
+
+        if [[ ! -f "mod_form.php" ]]; then
+          echo "❌ mod_form.php es requerido para módulos de actividad"
+          exit 1
+        fi
+        
+        if [[ ! -d "db" ]]; then
+          echo "❌ directorio db/ es requerido"
+          exit 1
+        fi
+        
+        if [[ ! -f "db/access.php" ]]; then
+          echo "❌ db/access.php es requerido"
+          exit 1
+        fi
+        
+        echo "✅ Estructura de archivos válida"
+    
+    - name: Validate version.php format
+      run: |
+        php -r "
+        require_once 'version.php';
+        if (!isset(\$plugin)) {
+          echo '❌ \$plugin no está definido en version.php' . PHP_EOL;
+          exit(1);
+        }
+        if (!isset(\$plugin->component)) {
+          echo '❌ component no está definido' . PHP_EOL;
+          exit(1);
+        }
+        if (!isset(\$plugin->version)) {
+          echo '❌ version no está definido' . PHP_EOL;
+          exit(1);
+        }
+        echo '✅ version.php válido' . PHP_EOL;
+        "
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: validate
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Run security checks
+      run: |
+        # Buscar patrones de seguridad problemáticos
+        echo "🔍 Buscando patrones de seguridad..."
+        
+        # Verificar que no hay eval() statements
+        if grep -r "eval(" --include="*.php" .; then
+          echo "❌ Encontrado uso de eval() - riesgo de seguridad"
+          exit 1
+        fi
