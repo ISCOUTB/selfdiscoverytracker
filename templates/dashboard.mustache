@@ -1,0 +1,75 @@
+<div class="student-tracker-container">
+    {{#is_teacher}}
+        <div class="teacher-view-container">
+            <div class="teacher-card">
+                <div class="teacher-card-header">
+                    <div class="teacher-card-title">{{title}}</div>
+                </div>
+                <div class="teacher-card-body">
+                    <div class="teacher-card-text">{{str_view_full_report_desc}}</div>
+                    <a href="{{block_url}}" class="btn btn-primary teacher-card-btn">{{str_view_full_report}}</a>
+                </div>
+            </div>
+        </div>
+    {{/is_teacher}}
+
+    {{^is_teacher}}
+        <div class="student-dashboard-header">
+            <h1>{{title}}</h1>
+            <p class="subtitle">{{subtitle}}</p>
+
+            <div class="global-progress-wrapper">
+                <div class="progress-label">
+                    <span>{{#str}}progress, mod_selfdiscoverytracker{{/str}}</span>
+                    <span class="percentage-badge">{{global_percentage}}%</span>
+                </div>
+                <div class="progress global-progress">
+                    <div class="progress-bar" role="progressbar" style="width: {{global_percentage}}%" aria-valuenow="{{global_percentage}}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tracker-cards-grid">
+            {{#cards}}
+                <div class="tracker-card {{status_class}} test-{{key_class}}">
+                    <div class="card-step-number">{{step}}</div>
+                    <div class="card-content">
+                        <div class="card-header-section">
+                            <div class="card-icon">
+                                <img src="{{icon}}" alt="{{title}}">
+                            </div>
+                            <div class="card-title-section">
+                                <h3>{{title}}</h3>
+                                <span class="status-badge {{status_class}}">{{status_label}}</span>
+                            </div>
+                        </div>
+
+                        <div class="card-body-section">
+                            {{#unsubmitted_alert}}
+                                <div class="alert alert-warning unsubmitted-alert">
+                                    <i class="fa fa-exclamation-triangle"></i> {{#str}}alert_unsubmitted, mod_selfdiscoverytracker{{/str}}
+                                </div>
+                            {{/unsubmitted_alert}}
+
+                            <div class="card-progress">
+                                <div class="progress-info">
+                                    <span class="small-text text-muted">{{answeredtext}}</span>
+                                    <span class="small-text font-weight-bold">{{percentage}}%</span>
+                                </div>
+                                <div class="progress sm">
+                                    <div class="progress-bar" role="progressbar" style="width: {{percentage}}%" aria-valuenow="{{percentage}}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer-section">
+                            <a href="{{action_url}}" class="btn {{#is_completed}}btn-outline-success{{/is_completed}}{{^is_completed}}btn-primary{{/is_completed}} btn-block action-btn">
+                                {{action_label}} {{#is_completed}}<i class="fa fa-check"></i>{{/is_completed}}{{^is_completed}}<i class="fa fa-arrow-right"></i>{{/is_completed}}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {{/cards}}
+        </div>
+    {{/is_teacher}}
+</div>
