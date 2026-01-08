@@ -9,4 +9,6 @@ y este proyecto adhiere al [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ### Agregado
 - Versión inicial del módulo Self Discovery Tracker.
-- Sistema moderno de rastreo de para los test de autodescubrimiento.
+- Sistema moderno de rastreo para los test de autodescubrimiento.
+- Interfaz de usuario intuitiva y responsiva.
+- Soporte para múltiples idiomas.
