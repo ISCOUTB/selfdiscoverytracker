@@ -1,0 +1,350 @@
+.student-tracker-container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.student-dashboard-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.student-dashboard-header h1 {
+    font-weight: 800;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 2.5rem;
+}
+
+.student-dashboard-header .subtitle {
+    color: #7f8c8d;
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.global-progress-wrapper {
+    width: 100%;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #34495e;
+}
+
+.percentage-badge {
+    background: #34495e;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+.global-progress {
+    height: 12px;
+    border-radius: 6px;
+    background-color: #ecf0f1;
+}
+
+/* Global progress*/
+.global-progress .progress-bar {
+    background-color: #8ec5ff; /* azul clarito */
+    background-image: none;
+}
+
+.tracker-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.tracker-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+}
+
+.tracker-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+.card-step-number {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 60px;
+    height: 60px;
+    background: #f8f9fa;
+    color: #bdc3c7;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    z-index: 0;
+    opacity: 0.5;
+}
+
+.tracker-card.completed .card-step-number {
+    background: #d4edda;
+    color: #155724;
+    opacity: 0.2;
+}
+
+.card-content {
+    padding: 25px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card-header-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-icon {
+    width: 60px;
+    height: 60px;
+    margin-right: 20px;
+    flex-shrink: 0;
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.card-title-section h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: #2c3e50;
+    line-height: 1.3;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.completed {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-badge.in-progress {
+    background-color: #fff8e1;
+    color: #f57f17;
+}
+
+.status-badge.not-started {
+    background-color: #f5f5f5;
+    color: #757575;
+}
+
+.card-body-section {
+    flex-grow: 1;
+    margin-bottom: 20px;
+}
+
+.card-progress .progress {
+    height: 8px;
+    border-radius: 4px;
+    background-color: #ecf0f1;
+    margin-top: 5px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+}
+
+.unsubmitted-alert {
+    font-size: 0.8rem;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    color: #856404;
+}
+
+.card-footer-section {
+    margin-top: auto;
+}
+
+.action-btn {
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Teacher view */
+.teacher-view-container {
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+.teacher-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    border: 1px solid #f0f0f0;
+    overflow: hidden;
+}
+
+.teacher-card-header {
+    padding: 18px 22px;
+    border-bottom: 1px solid #f1f3f5;
+    background: #f8f9fa;
+}
+
+.teacher-card-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #2c3e50;
+}
+
+.teacher-card-body {
+    padding: 22px;
+}
+
+.teacher-card-text {
+    color: #6c757d;
+    margin-bottom: 14px;
+}
+
+.teacher-card-btn {
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+/* Official gradients for each exploration */
+.tracker-card.test-learning-style .progress-bar {
+    background-image: linear-gradient(90deg, #0d6efd 0%, #0a58ca 100%);
+}
+
+.tracker-card.test-learning-style:not(.completed) .action-btn {
+    background: linear-gradient(90deg, #0d6efd 0%, #0a58ca 100%) !important;
+    border-color: transparent !important;
+}
+
+.tracker-card.test-personality .progress-bar {
+    background-image: linear-gradient(135deg, #00bf91 0%, #00a07a 100%);
+}
+
+.tracker-card.test-personality:not(.completed) .action-btn {
+    background: linear-gradient(135deg, #00bf91 0%, #00a07a 100%) !important;
+    border-color: transparent !important;
+}
+
+.tracker-card.test-chaside .progress-bar {
+    background-image: linear-gradient(90deg, #ffb600 0%, #ff9500 100%);
+}
+
+.tracker-card.test-chaside:not(.completed) .action-btn {
+    background: linear-gradient(90deg, #ffb600 0%, #ff9500 100%) !important;
+    border-color: transparent !important;
+}
+
+.tracker-card.test-tmms24 .progress-bar {
+    background-image: linear-gradient(90deg, #ff6600 0%, #e65c00 100%);
+}
+
+.tracker-card.test-tmms24:not(.completed) .action-btn {
+    background: linear-gradient(90deg, #ff6600 0%, #e65c00 100%) !important;
+    border-color: transparent !important;
+}
+
+.tracker-card.test-student-path .progress-bar {
+    background-image: linear-gradient(90deg, #9c27b0 0%, #764ba2 100%);
+}
+
+.tracker-card.test-student-path:not(.completed) .action-btn {
+    background: linear-gradient(90deg, #9c27b0 0%, #764ba2 100%) !important;
+    border-color: transparent !important;
+}
+
+.tracker-card:not(.completed) .action-btn {
+    color: #fff !important;
+}
+
+.tracker-card:not(.completed) .action-btn:hover {
+    filter: brightness(0.98);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .student-dashboard-header h1 {
+        font-size: 2rem;
+    }
+    
+    .tracker-cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ------------------------------------------------------------
+   Staff UX: hide completion prompts for this activity
+   ------------------------------------------------------------ */
+
+/* Course page (cm item wrapper gets 'sdt-hidecompletion' via cm_info_view). */
+.activity-wrapper.sdt-hidecompletion .activity-information,
+.activity-wrapper.sdt-hidecompletion [data-region="activity-information"],
+.activity-wrapper.sdt-hidecompletion [data-region="completion-info"],
+.activity-wrapper.sdt-hidecompletion [data-region="completionrequirements"],
+.activity-wrapper.sdt-hidecompletion .automatic-completion-conditions,
+.activity-wrapper.sdt-hidecompletion .autocompletion {
+    display: none !important;
+}
+
+/* Activity page (body gets 'sdt-staff'). */
+.sdt-staff .activity-header .activitycompletion,
+.sdt-staff .activity-header [data-region="completion-info"],
+.sdt-staff .activity-header [data-region="completionrequirements"],
+.sdt-staff .activity-header .automatic-completion-conditions {
+    display: none !important;
+}
