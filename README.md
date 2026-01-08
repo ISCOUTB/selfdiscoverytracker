@@ -131,7 +131,7 @@ El módulo implementa `completion_info` con una regla personalizada llamada `com
 ### Consideraciones
 - **Versión de Moodle**: Compatible con Moodle 4.0+.
 - **Versión de PHP**: PHP 7.4+ recomendado.
-- **Integridad de Datos**: Si un bloque dependiente es desinstalado, el Rastreador mostrará errores o dejará de reportar progreso para esa sección específica.
+- **Integridad de Datos**: Si un bloque dependiente es desinstalado, el Rastreador mostrará errores y dejará de reportar progreso para esa sección específica.
 
 ### Resolución de problemas
 - **La actividad no se marca como completada**: Verifique que el estudiante haya llegado a la pantalla de resultados finales en cada uno de los 5 tests individuales.
