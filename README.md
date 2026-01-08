@@ -117,7 +117,7 @@ El módulo implementa `completion_info` con una regla personalizada llamada `com
 ---
 ## Instalación
 1. Tener instalados los bloques dependientes mencionados en la sección técnica.
-2. Descargar el plugin desde las *releases* del repositorio oficial: https://github.com/ISCOUTB/selfdiscoverytracker
+2. Descargar el plugin desde las *releases* del repositorio oficial: https://github.com/ISCOUTB/selfdiscoverytracker/releases
 3. En Moodle (como administrador):
    - Ir a **Administración del sitio → Extensiones → Instalar plugins**.
    - Subir el archivo ZIP.
