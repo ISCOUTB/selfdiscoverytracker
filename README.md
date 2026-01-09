@@ -28,6 +28,7 @@ Funciona como un "hub" o centro de control que verifica en tiempo real el estado
 - **Control de Progreso del Curso**: Permite al docente configurar la actividad como requisito de finalización del curso.
 - **Gestión Simplificada**: En lugar de rastrear 5 actividades por separado, el docente solo necesita monitorear esta actividad integradora.
 - **Vista Diferenciada**: Los docentes ven una interfaz adaptada que les indica que están en modo de visualización de staff, ocultando los prompts de autocompletado personal.
+- **Soporte de Calificaciones**: El módulo incluye integración con el libro de calificaciones de Moodle, permitiendo asignar de manera automática una nota al estudiante basada en su progreso en el circuito de autodescubrimiento.
 
 ---
 ## Recorrido Visual
