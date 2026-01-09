@@ -33,6 +33,8 @@ class mod_selfdiscoverytracker_mod_form extends moodleform_mod {
 
         $this->standard_intro_elements();
 
+        $this->standard_grading_coursemodule_elements();
+
         $this->standard_coursemodule_elements();
 
         // Default completion settings (teacher can edit).
