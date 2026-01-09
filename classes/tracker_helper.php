@@ -66,16 +66,27 @@ class tracker_helper {
         }
         $checked_instances[$cache_key] = true;
 
+        // Fetch full record for grading and completion
+        $tracker = $DB->get_record('selfdiscoverytracker', ['id' => $cm->instance], '*', IGNORE_MISSING);
+        if (!$tracker) {
+            return;
+        }
+
+        // Update Grades
+        if (file_exists($CFG->dirroot . '/mod/selfdiscoverytracker/lib.php')) {
+            require_once($CFG->dirroot . '/mod/selfdiscoverytracker/lib.php');
+            if (function_exists('selfdiscoverytracker_update_grades')) {
+                selfdiscoverytracker_update_grades($tracker, $userid);
+            }
+        }
+
         $completion = new \completion_info(\get_course($cm->course));
         if (!$completion->is_enabled($cm)) {
             return;
         }
 
         // We need to check if 'completionalltests' is enabled for this instance.
-        // cm_info should have custom data but we might need to query DB if not available.
-        // We use a light query.
-        $tracker = $DB->get_record('selfdiscoverytracker', ['id' => $cm->instance], 'completionalltests', IGNORE_MISSING);
-        if (!$tracker || empty($tracker->completionalltests)) {
+        if (empty($tracker->completionalltests)) {
             return;
         }
 
