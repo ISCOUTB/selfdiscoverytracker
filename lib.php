@@ -22,6 +22,8 @@ function selfdiscoverytracker_supports($feature) {
         case FEATURE_SHOW_DESCRIPTION:  return true;
         case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
         case FEATURE_COMPLETION_HAS_RULES: return true;
+        case FEATURE_GRADE_HAS_GRADE:   return true;
+        case FEATURE_GRADE_OUTCOMES:    return true;
         case FEATURE_BACKUP_MOODLE2:    return true;
         default: return null;
     }
@@ -124,7 +126,11 @@ function selfdiscoverytracker_add_instance($selfdiscoverytracker) {
     $selfdiscoverytracker->timecreated = time();
     $selfdiscoverytracker->timemodified = time();
 
-    return $DB->insert_record('selfdiscoverytracker', $selfdiscoverytracker);
+    $selfdiscoverytracker->id = $DB->insert_record('selfdiscoverytracker', $selfdiscoverytracker);
+
+    selfdiscoverytracker_grade_item_update($selfdiscoverytracker);
+
+    return $selfdiscoverytracker->id;
 }
 
 /**
@@ -139,7 +145,14 @@ function selfdiscoverytracker_update_instance($selfdiscoverytracker) {
     $selfdiscoverytracker->timemodified = time();
     $selfdiscoverytracker->id = $selfdiscoverytracker->instance;
 
-    return $DB->update_record('selfdiscoverytracker', $selfdiscoverytracker);
+    if (!$DB->update_record('selfdiscoverytracker', $selfdiscoverytracker)) {
+        return false;
+    }
+
+    selfdiscoverytracker_grade_item_update($selfdiscoverytracker);
+    selfdiscoverytracker_update_grades($selfdiscoverytracker);
+
+    return true;
 }
 
 /**
@@ -156,6 +169,8 @@ function selfdiscoverytracker_delete_instance($id) {
     }
 
     $DB->delete_records('selfdiscoverytracker', array('id' => $selfdiscoverytracker->id));
+
+    selfdiscoverytracker_grade_item_delete($selfdiscoverytracker);
 
     return true;
 }
@@ -183,4 +198,143 @@ function selfdiscoverytracker_get_completion_state($course, $cm, $userid, $type)
     
     return $type;
 }
+
+/**
+ * Create or update the grade item for given selfdiscoverytracker instance.
+ *
+ * @param stdClass $selfdiscoverytracker
+ * @param mixed $grades Optional array/object of grade(s); 'reset' means reset grades in gradebook
+ * @return int 0 if ok, error code otherwise
+ */
+function selfdiscoverytracker_grade_item_update($selfdiscoverytracker, $grades=null) {
+    global $CFG;
+    require_once($CFG->libdir.'/gradelib.php');
+
+    $params = array('itemname' => $selfdiscoverytracker->name, 'idnumber' => $selfdiscoverytracker->course);
+
+    if (isset($selfdiscoverytracker->grade)) {
+        $params['gradetype'] = GRADE_TYPE_VALUE;
+        $params['grademax']  = $selfdiscoverytracker->grade;
+        $params['grademin']  = 0;
+    } else {
+        $params['gradetype'] = GRADE_TYPE_NONE;
+    }
+
+    if ($grades  === 'reset') {
+        $params['reset'] = true;
+        $grades = null;
+    }
+
+    return grade_update('mod/selfdiscoverytracker', $selfdiscoverytracker->course, 'mod', 'selfdiscoverytracker', $selfdiscoverytracker->id, 0, $grades, $params);
+}
+
+/**
+ * Delete grade item for given selfdiscoverytracker instance.
+ *
+ * @param stdClass $selfdiscoverytracker
+ * @return int 0 if ok, error code otherwise
+ */
+function selfdiscoverytracker_grade_item_delete($selfdiscoverytracker) {
+    global $CFG;
+    require_once($CFG->libdir.'/gradelib.php');
+
+    return grade_update('mod/selfdiscoverytracker', $selfdiscoverytracker->course, 'mod', 'selfdiscoverytracker', $selfdiscoverytracker->id, 0, null, array('deleted'=>1));
+}
+
+/**
+ * Update grades in gradebook.
+ *
+ * @param stdClass $selfdiscoverytracker
+ * @param int $userid Specific user only, 0 means all
+ * @param bool $nullifnone If true and user has no grade, set grade to null
+ */
+function selfdiscoverytracker_update_grades($selfdiscoverytracker, $userid=0, $nullifnone=true) {
+    global $CFG, $DB;
+    require_once($CFG->libdir.'/gradelib.php');
+    require_once($CFG->dirroot.'/mod/selfdiscoverytracker/classes/tracker_helper.php');
+
+    $grades = array();
+
+    if ($userid) {
+        $users = array($userid);
+    } else {
+        // This can be very slow if many users.
+        // We get all users capable of being graded.
+        // We need cmid. If not in object, try to find it.
+        $cm = get_coursemodule_from_instance('selfdiscoverytracker', $selfdiscoverytracker->id, $selfdiscoverytracker->course);
+        $context = context_module::instance($cm->id);
+        $users = get_enrolled_users($context, 'mod/selfdiscoverytracker:view', 0, 'u.id');
+        $users = array_keys($users);
+    }
+
+    foreach ($users as $uid) {
+        $progress = \mod_selfdiscoverytracker\tracker_helper::get_all_tests_progress($uid);
+        $completed_count = 0;
+        foreach ($progress as $test) {
+            if (!empty($test['completed'])) {
+                $completed_count++;
+            }
+        }
+
+        // Calculation: (completed / 5) * max_grade
+        // We assume max_grade is present. Defaults to 100 if not.
+        $maxgrade = $selfdiscoverytracker->grade ?? 100;
+        $final_grade = ($completed_count / 5.0) * $maxgrade;
+
+        $grades[$uid] = new stdClass();
+        $grades[$uid]->userid = $uid;
+        $grades[$uid]->rawgrade = $final_grade;
+    }
+
+    selfdiscoverytracker_grade_item_update($selfdiscoverytracker, $grades);
+}
+
+/**
+ * Extends the settings navigation with the selfdiscoverytracker settings.
+ *
+ * @param settings_navigation $settingsnav
+ * @param navigation_node $selfdiscoverytrackernode
+ * @return void
+ */
+function selfdiscoverytracker_extend_settings_navigation(settings_navigation $settingsnav, navigation_node $selfdiscoverytrackernode) {
+    global $PAGE, $DB;
+    
+    // Only available to users who can see all grades (teachers).
+    if (!has_capability('moodle/grade:viewall', $PAGE->context)) {
+        return;
+    }
+
+    $cm = $PAGE->cm;
+    if (!$cm) {
+        return;
+    }
+
+    // Ensure we have the instance.
+    $grade_item = $DB->get_record('grade_items', array(
+        'itemtype' => 'mod',
+        'itemmodule' => 'selfdiscoverytracker',
+        'iteminstance' => $cm->instance,
+        'courseid' => $cm->course
+    ));
+
+    if ($grade_item) {
+        // Link to the Single View grade report for this item.
+        $url = new moodle_url('/grade/report/singleview/index.php', array(
+            'id' => $cm->course,
+            'item' => 'grade',
+            'itemid' => $grade_item->id
+        ));
+
+        // In Moodle 4.0+ boosting theme, adding to this node creates a secondary nav tab.
+        $selfdiscoverytrackernode->add(
+            get_string('grades'),
+            $url,
+            navigation_node::TYPE_SETTING,
+            null,
+            'selfdiscoverytrackergrades',
+            new pix_icon('i/grades', '')
+        );
+    }
+}
+
 
