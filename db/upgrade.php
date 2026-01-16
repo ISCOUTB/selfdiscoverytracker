@@ -36,5 +36,20 @@ function xmldb_selfdiscoverytracker_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2026010801, 'selfdiscoverytracker');
     }
 
+    if ($oldversion < 2026011601) {
+
+        // Define field grade to be modified in selfdiscoverytracker.
+        $table = new xmldb_table('selfdiscoverytracker');
+        $field = new xmldb_field('grade', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '5', 'introformat');
+
+        // Launch change of default for field grade.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->change_field_default($table, $field);
+        }
+
+        // selfdiscoverytracker savepoint reached.
+        upgrade_mod_savepoint(true, 2026011601, 'selfdiscoverytracker');
+    }
+
     return true;
 }
