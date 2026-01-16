@@ -35,7 +35,48 @@ class mod_selfdiscoverytracker_mod_form extends moodleform_mod {
 
         $this->standard_grading_coursemodule_elements();
 
+        // Customization: Restrict grading to points only.
+        $mform = $this->_form;
+        if ($mform->elementExists('grade')) {
+            $gradeitem = $mform->getElement('grade');
+            if ($gradeitem instanceof MoodleQuickForm_group) {
+                $elements = $gradeitem->getElements();
+                foreach ($elements as $el) {
+                    if ($el->getName() == 'modgrade_type') {
+                        // Remove all existing options to ensure only 'point' is available
+                        // regardless of what options Moodle core or plugins might add.
+                        $el->removeOptions();
+                        $el->addOption(get_string('modgradetypepoint', 'grades'), 'point');
+                    }
+                }
+            }
+        }
+
         $this->standard_coursemodule_elements();
+
+        // Remove "Student must receive a grade" completion condition.
+        // We rely on "completionalltests" instead, as grades are progressive.
+        if ($mform->elementExists('completionusegrade')) {
+            $mform->removeElement('completionusegrade');
+        }
+
+        // "Student must receive a passing grade" can only be enabled
+        // if "Student must complete all 5 self-knowledge tests" is NOT enabled.
+        if ($mform->elementExists('completionpassgrade')) {
+             $mform->disabledIf('completionpassgrade', 'completionalltests', 'checked');
+
+             // Ensure it is unchecked visually when disabled to avoid confusion.
+             global $PAGE;
+             $PAGE->requires->js_amd_inline("
+                require(['jquery'], function($) {
+                    $('input[name=\"completionalltests\"]').change(function() {
+                        if ($(this).is(':checked')) {
+                            $('input[name=\"completionpassgrade\"]').prop('checked', false);
+                        }
+                    });
+                });
+             ");
+        }
 
         // Default completion settings (teacher can edit).
         $mform->setDefault('completion', COMPLETION_TRACKING_AUTOMATIC);
@@ -55,6 +96,10 @@ class mod_selfdiscoverytracker_mod_form extends moodleform_mod {
             $default_values['completion'] = COMPLETION_TRACKING_AUTOMATIC;
             $default_values['completionview'] = 0;
             $default_values['completionalltests'] = 1;
+            
+            // Set default grading to 0-5 points
+            $default_values['grade'] = 5;
+            $default_values['gradecat'] = 0;
         }
     }
 
@@ -68,4 +113,3 @@ class mod_selfdiscoverytracker_mod_form extends moodleform_mod {
         return !empty($data['completionalltests']);
     }
 }
-
