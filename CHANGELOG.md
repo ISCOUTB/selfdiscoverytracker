@@ -5,6 +5,12 @@ Todos los cambios notables de este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere al [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] — 2026-01-16
+
+### Corregido
+- Restricción de calificación a solo formato de puntuación de Moodle.
+- Nuevo valor predeterminado de calificación establecido en 5.
+
 ## [1.0.1] — 2026-01-08
 
 ### Agregado
