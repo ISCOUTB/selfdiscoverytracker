@@ -1,7 +1,7 @@
 <?php
 /**
  * Self Discovery Tracker Module First Update
- * Version 1.0.3 - Production Ready
+ * Version 1.0.4 - Production Ready
  *
  * @package    mod_selfdiscoverytracker
  * @copyright  2026 Jairo Serrano, Yuranis Henriquez, Isaac Sanchez, Santiago Orejuela, Maria Valentina
@@ -10,16 +10,16 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2026011800; // YYYYMMDDXX (year, month, day, 2-digit version number).
+$plugin->version = 2026011801; // YYYYMMDDXX (year, month, day, 2-digit version number).
 $plugin->requires = 2022041900; // Moodle 4.0+
 $plugin->component = 'mod_selfdiscoverytracker';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.0.3';
+$plugin->release = '1.0.4';
 
 $plugin->dependencies = [
     'block_student_path' => 2026010800,
     'block_chaside' => 2026010800,
-    'block_learning_style' => 2026010800,
-    'block_personality_test' => 2026010800,
+    'block_learning_style' => 2026011800,
+    'block_personality_test' => 2026011800,
     'block_tmms_24' => 2026010800,
 ];
