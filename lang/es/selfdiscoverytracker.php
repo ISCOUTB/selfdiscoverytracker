@@ -30,7 +30,6 @@ $string['test_student_path'] = 'Mapa de Identidad';
 $string['action_start'] = 'Iniciar Exploración';
 $string['action_continue'] = 'Continuar';
 $string['action_view_results'] = 'Ver Resultados';
-$string['action_view_sidebar'] = 'Ver en Barra Lateral';
 $string['action_view_map'] = 'Ver Mapa';
 $string['action_start_map'] = 'Iniciar mapa';
 $string['action_finalize'] = 'Finalizar ahora';
