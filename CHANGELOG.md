@@ -5,6 +5,12 @@ Todos los cambios notables de este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere al [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] — 2026-01-18
+
+### Cambiado
+- Actualización de enlaces de resultados para Estilos de Aprendizaje y Personalidad hacia páginas individuales.
+- Unificación de la lógica de URLs de resultados para todas las exploraciones.
+
 ## [1.0.3] — 2026-01-18
 
 ### Cambiado
