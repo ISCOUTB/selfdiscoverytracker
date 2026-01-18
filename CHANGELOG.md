@@ -5,6 +5,11 @@ Todos los cambios notables de este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere al [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] — 2026-01-18
+
+### Cambiado
+- Uso de "exploraciones" en lugar de "tests" en todos los textos del módulo.
+
 ## [1.0.2] — 2026-01-16
 
 ### Corregido
