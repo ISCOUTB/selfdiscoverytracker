@@ -63,18 +63,14 @@ class dashboard implements renderable, templatable {
             // Determine button text and URL
             $action_label = '';
             $action_url = '';
-            $is_sidebar_result = in_array($key, ['learning_style', 'personality']);
-
+            
             if ($is_completed) {
-                if ($is_sidebar_result) {
-                    $action_label = get_string('action_view_sidebar', 'mod_selfdiscoverytracker');
-                    $action_url = $this->get_sidebar_results_url($key, $this->course->id);
-                } else if ($key === 'student_path') {
+                if ($key === 'student_path') {
                     $action_label = get_string('action_view_map', 'mod_selfdiscoverytracker');
-                    $action_url = $this->get_test_url($key, $this->course->id);
+                    $action_url = $this->get_results_url($key, $this->course->id);
                 } else {
                     $action_label = get_string('action_view_results', 'mod_selfdiscoverytracker');
-                    $action_url = $this->get_test_url($key, $this->course->id);
+                    $action_url = $this->get_results_url($key, $this->course->id);
                 }
             } else {
                 if (!empty($info['unsubmitted_alert'])) {
@@ -163,40 +159,21 @@ class dashboard implements renderable, templatable {
         }
     }
 
-    private function get_sidebar_results_url(string $key, int $courseid): string {
-        $blockname = null;
-        if ($key === 'learning_style') {
-            $blockname = 'learning_style';
-        } else if ($key === 'personality') {
-            $blockname = 'personality_test';
+    private function get_results_url($key, $courseid) {
+        global $USER;
+        switch ($key) {
+            case 'learning_style':
+                return (new moodle_url('/blocks/learning_style/view_individual.php', ['courseid' => $courseid, 'userid' => $USER->id]))->out(false);
+            case 'personality':
+                return (new moodle_url('/blocks/personality_test/view_individual.php', ['cid' => $courseid, 'userid' => $USER->id]))->out(false);
+            case 'chaside':
+                return (new moodle_url('/blocks/chaside/view.php', ['courseid' => $courseid]))->out(false);
+            case 'tmms24':
+                return (new moodle_url('/blocks/tmms_24/view.php', ['cid' => $courseid]))->out(false);
+            case 'student_path':
+                return (new moodle_url('/blocks/student_path/view.php', ['cid' => $courseid]))->out(false);
+            default:
+                return $this->get_test_url($key, $courseid);
         }
-
-        $courseurl = new moodle_url('/course/view.php', ['id' => $courseid]);
-        if (!$blockname) {
-            return $courseurl->out(false);
-        }
-
-        $blockinstanceid = $this->get_course_block_instance_id($courseid, $blockname);
-        if (!$blockinstanceid) {
-            return $courseurl->out(false);
-        }
-
-        return $courseurl->out(false) . '#inst' . $blockinstanceid;
-    }
-
-    private function get_course_block_instance_id(int $courseid, string $blockname): ?int {
-        global $DB;
-
-        $contextid = \context_course::instance($courseid)->id;
-        $record = $DB->get_record('block_instances', [
-            'parentcontextid' => $contextid,
-            'blockname' => $blockname,
-        ], 'id', IGNORE_MISSING);
-
-        if (!$record) {
-            return null;
-        }
-
-        return (int)$record->id;
     }
 }
