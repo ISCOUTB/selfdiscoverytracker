@@ -54,6 +54,9 @@ function selfdiscoverytracker_cm_info_dynamic(cm_info $cm): void {
         $cm->completionexpected = 0;
         $cm->completionpassgrade = null;
         $cm->completiongradeitemnumber = null;
+    } else {
+        // Students should see this activity embedded without a view link.
+        $cm->set_no_view_link();
     }
 }
 
@@ -89,6 +92,8 @@ function selfdiscoverytracker_cm_info_view(cm_info $cm): void {
         $existing = trim($cm->extraclasses ?? '');
         $cm->set_extra_classes(trim($existing . ' sdt-hidecompletion'));
     } else {
+        global $PAGE, $CFG;
+
         // For students, we check completion status dynamically on course view
         // to ensure it updates immediately without page refresh.
         if ($cm->completion == COMPLETION_TRACKING_AUTOMATIC && isloggedin() && !isguestuser()) {
@@ -96,9 +101,31 @@ function selfdiscoverytracker_cm_info_view(cm_info $cm): void {
             if (class_exists('\mod_selfdiscoverytracker\tracker_helper')) {
                 \mod_selfdiscoverytracker\tracker_helper::check_and_update_completion($cm, $USER->id);
             } else {
-                global $CFG;
                 require_once($CFG->dirroot . '/mod/selfdiscoverytracker/classes/tracker_helper.php');
                 \mod_selfdiscoverytracker\tracker_helper::check_and_update_completion($cm, $USER->id);
+            }
+        }
+
+        // Render dashboard inline for students on the course page.
+        if ($cm->uservisible && has_capability('mod/selfdiscoverytracker:view', $cm->context) &&
+            isset($PAGE) && $PAGE->context && $PAGE->context->contextlevel == CONTEXT_COURSE &&
+            $PAGE->context->instanceid == $cm->course) {
+            if (!class_exists('\mod_selfdiscoverytracker\tracker_helper')) {
+                require_once($CFG->dirroot . '/mod/selfdiscoverytracker/classes/tracker_helper.php');
+            }
+
+            try {
+                $progress_data = \mod_selfdiscoverytracker\tracker_helper::get_all_tests_progress($USER->id);
+                $course = $cm->get_modinfo()->get_course();
+
+                $output = $PAGE->get_renderer('mod_selfdiscoverytracker');
+                $dashboard = new \mod_selfdiscoverytracker\output\dashboard($course, $cm, $progress_data, false);
+
+                // Inject the dashboard HTML into the content area of the module on the course page.
+                $cm->set_content($output->render($dashboard), true);
+                $cm->set_extra_classes(trim(($cm->extraclasses ?? '') . ' sdt-inline-dashboard'));
+            } catch (Exception $e) {
+                // Fail silently to avoid breaking the course page.
             }
         }
     }
