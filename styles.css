@@ -326,6 +326,13 @@
     }
 }
 
+/* Inline course view: use full available width */
+.activity-wrapper.sdt-inline-dashboard .student-tracker-container {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+}
+
 /* ------------------------------------------------------------
    Staff UX: hide completion prompts for this activity
    ------------------------------------------------------------ */
