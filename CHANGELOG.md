@@ -5,6 +5,13 @@ Todos los cambios notables de este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere al [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.5] — 2026-01-20
+
+### Cambiado
+- Renderizado del dashboard embebido en la página del curso para estudiantes (actividad sin enlace).
+- Ajuste de estilos para usar todo el ancho disponible cuando está embebido.
+
+
 ## [1.0.4] — 2026-01-18
 
 ### Cambiado
