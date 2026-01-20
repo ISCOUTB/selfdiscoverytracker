@@ -46,15 +46,7 @@ function selfdiscoverytracker_cm_info_dynamic(cm_info $cm): void {
         has_capability('moodle/course:viewhiddenactivities', $coursecontext) ||
         has_capability('moodle/site:config', $coursecontext);
 
-    if ($isteacheroradmin) {
-        // Hide completion status display for privileged users without changing
-        // the actual activity settings or completion state.
-        $cm->completion = COMPLETION_TRACKING_NONE;
-        $cm->completionview = 0;
-        $cm->completionexpected = 0;
-        $cm->completionpassgrade = null;
-        $cm->completiongradeitemnumber = null;
-    } else {
+    if (!$isteacheroradmin) {
         // Students should see this activity embedded without a view link.
         $cm->set_no_view_link();
     }
