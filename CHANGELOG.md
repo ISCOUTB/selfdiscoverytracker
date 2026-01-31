@@ -5,6 +5,11 @@ Todos los cambios notables de este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere al [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.7] — 2026-01-31
+
+### Corregido
+- Error `Class 'backup_selfdiscoverytracker_activity_task' not found` al realizar copias del curso, debido a la falta de implementación de las clases de respaldo (soportando `FEATURE_BACKUP_MOODLE2`).
+
 ## [1.0.6] — 2026-01-20
 
 ### Corregido
