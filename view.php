@@ -37,6 +37,7 @@ $is_teacher = has_capability('mod/selfdiscoverytracker:addinstance', $context) |
     has_capability('moodle/course:manageactivities', $coursecontext) ||
     has_capability('moodle/course:viewhiddenactivities', $coursecontext) ||
     has_capability('moodle/site:config', $coursecontext);
+$can_view_student_data = has_capability('mod/selfdiscoverytracker:viewstudentdata', $coursecontext);
 
 // Trigger module viewed event
 $event = \mod_selfdiscoverytracker\event\course_module_viewed::create(array(
@@ -84,7 +85,13 @@ if (!$is_teacher) {
 }
 
 $output = $PAGE->get_renderer('mod_selfdiscoverytracker');
-$dashboard = new \mod_selfdiscoverytracker\output\dashboard($course, $cm, $progress_data, $is_teacher);
+$dashboard = new \mod_selfdiscoverytracker\output\dashboard(
+    $course,
+    $cm,
+    $progress_data,
+    $is_teacher,
+    $can_view_student_data
+);
 
 echo $output->header();
 echo $output->render($dashboard);

@@ -1,4 +1,9 @@
 <?php
+$string['selfdiscoverytracker:viewstudentdata'] = 'View sensitive student data';
+$string['selfdiscoverytracker:addinstance'] = 'Add Self Discovery Tracker activity';
+$string['selfdiscoverytracker:view'] = 'View Self Discovery Tracker activity';
+$string['restricted_title'] = 'Restricted access';
+$string['restricted_description'] = 'Student progress and results are only available to authorised people.';
 $string['modulename'] = 'Self Discovery Tracker';
 $string['modulename_help'] = 'This activity tracks progress across 5 self-discovery explorations.';
 $string['modulenameplural'] = 'Self Discovery Trackers';
@@ -46,3 +51,4 @@ $string['view_full_report_desc'] = 'Check the full course report in the Comprehe
 // Completion
 $string['completionalltests'] = 'Require all explorations completed';
 $string['completionalltests_desc'] = 'Student must complete all 5 self-knowledge explorations';
+$string['taskregradeallinstances'] = 'Recalculate Self-Discovery Tracker grades';

@@ -22,4 +22,11 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         )
     ),
+
+    // Progreso consolidado de las exploraciones: solo roles autorizados.
+    'mod/selfdiscoverytracker:viewstudentdata' => array(
+        'riskbitmask' => RISK_PERSONAL,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_COURSE
+    ),
 );

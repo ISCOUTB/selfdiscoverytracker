@@ -1,4 +1,17 @@
 <div class="student-tracker-container">
+    {{#restricted}}
+        <div class="teacher-view-container">
+            <div class="teacher-card">
+                <div class="teacher-card-header">
+                    <div class="teacher-card-title"><i class="fa fa-lock mr-2"></i>{{title}}</div>
+                </div>
+                <div class="teacher-card-body">
+                    <div class="teacher-card-text">{{description}}</div>
+                </div>
+            </div>
+        </div>
+    {{/restricted}}
+
     {{#is_teacher}}
         <div class="teacher-view-container">
             <div class="teacher-card">
@@ -14,6 +27,7 @@
     {{/is_teacher}}
 
     {{^is_teacher}}
+    {{^restricted}}
         <div class="student-dashboard-header">
             <h1>{{title}}</h1>
             <p class="subtitle">{{subtitle}}</p>
@@ -71,5 +85,6 @@
                 </div>
             {{/cards}}
         </div>
+    {{/restricted}}
     {{/is_teacher}}
 </div>

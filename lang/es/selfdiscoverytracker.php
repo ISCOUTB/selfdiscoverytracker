@@ -1,4 +1,9 @@
 <?php
+$string['selfdiscoverytracker:viewstudentdata'] = 'Ver datos sensibles de estudiantes';
+$string['selfdiscoverytracker:addinstance'] = 'Agregar actividad Rastreador de Autodescubrimiento';
+$string['selfdiscoverytracker:view'] = 'Ver actividad Rastreador de Autodescubrimiento';
+$string['restricted_title'] = 'Acceso restringido';
+$string['restricted_description'] = 'El progreso y los resultados de estudiantes solo están disponibles para las personas autorizadas.';
 $string['modulename'] = 'Rastreador de Autodescubrimiento';
 $string['modulename_help'] = 'Esta actividad rastrea el progreso a través de 5 exploraciones de autodescubrimiento.';
 $string['modulenameplural'] = 'Rastreadores de Autodescubrimiento';
@@ -46,3 +51,4 @@ $string['view_full_report_desc'] = 'Consulta el reporte completo del curso en el
 // Completion
 $string['completionalltests'] = 'Requerir todas las exploraciones completadas';
 $string['completionalltests_desc'] = 'El estudiante debe completar las 5 exploraciones de autoconocimiento';
+$string['taskregradeallinstances'] = 'Recalcular calificaciones del Camino de Autodescubrimiento';

@@ -142,6 +142,8 @@ function mod_selfdiscoverytracker_cm_info_view(cm_info $cm): void {
 function selfdiscoverytracker_add_instance($selfdiscoverytracker) {
     global $DB;
 
+    // Institutional grading policy: this activity can only award 0 or 5.
+    $selfdiscoverytracker->grade = 5;
     $selfdiscoverytracker->timecreated = time();
     $selfdiscoverytracker->timemodified = time();
 
@@ -161,6 +163,8 @@ function selfdiscoverytracker_add_instance($selfdiscoverytracker) {
 function selfdiscoverytracker_update_instance($selfdiscoverytracker) {
     global $DB;
 
+    // Keep the activity's scale fixed even if a form submission is altered.
+    $selfdiscoverytracker->grade = 5;
     $selfdiscoverytracker->timemodified = time();
     $selfdiscoverytracker->id = $selfdiscoverytracker->instance;
 
@@ -231,13 +235,11 @@ function selfdiscoverytracker_grade_item_update($selfdiscoverytracker, $grades=n
 
     $params = array('itemname' => $selfdiscoverytracker->name, 'idnumber' => $selfdiscoverytracker->course);
 
-    if (isset($selfdiscoverytracker->grade)) {
-        $params['gradetype'] = GRADE_TYPE_VALUE;
-        $params['grademax']  = $selfdiscoverytracker->grade;
-        $params['grademin']  = 0;
-    } else {
-        $params['gradetype'] = GRADE_TYPE_NONE;
-    }
+    // The institutional scale is binary: 0 until every exploration is complete,
+    // then 5. Keep the gradebook item fixed to that maximum for every instance.
+    $params['gradetype'] = GRADE_TYPE_VALUE;
+    $params['grademax']  = 5;
+    $params['grademin']  = 0;
 
     if ($grades  === 'reset') {
         $params['reset'] = true;
@@ -287,18 +289,9 @@ function selfdiscoverytracker_update_grades($selfdiscoverytracker, $userid=0, $n
     }
 
     foreach ($users as $uid) {
-        $progress = \mod_selfdiscoverytracker\tracker_helper::get_all_tests_progress($uid);
-        $completed_count = 0;
-        foreach ($progress as $test) {
-            if (!empty($test['completed'])) {
-                $completed_count++;
-            }
-        }
-
-        // Calculation: (completed / 5) * max_grade
-        // We assume max_grade is present. Defaults to 100 if not.
-        $maxgrade = $selfdiscoverytracker->grade ?? 100;
-        $final_grade = ($completed_count / 5.0) * $maxgrade;
+        // Partial completion never receives a partial grade. A student obtains
+        // the maximum grade only after completing all five explorations.
+        $final_grade = \mod_selfdiscoverytracker\tracker_helper::are_all_tests_completed($uid) ? 5 : 0;
 
         $grades[$uid] = new stdClass();
         $grades[$uid]->userid = $uid;
@@ -318,8 +311,9 @@ function selfdiscoverytracker_update_grades($selfdiscoverytracker, $userid=0, $n
 function selfdiscoverytracker_extend_settings_navigation(settings_navigation $settingsnav, navigation_node $selfdiscoverytrackernode) {
     global $PAGE, $DB;
     
-    // Only available to users who can see all grades (teachers).
-    if (!has_capability('moodle/grade:viewall', $PAGE->context)) {
+    // El enlace conduce a progreso sensible de estudiantes.
+    $coursecontext = context_course::instance($PAGE->course->id);
+    if (!has_capability('mod/selfdiscoverytracker:viewstudentdata', $coursecontext)) {
         return;
     }
 
@@ -355,5 +349,3 @@ function selfdiscoverytracker_extend_settings_navigation(settings_navigation $se
         );
     }
 }
-
-

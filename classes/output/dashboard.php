@@ -24,21 +24,30 @@ class dashboard implements renderable, templatable {
     protected $cm;
     protected $progress_data;
     protected $is_teacher;
+    protected $can_view_student_data;
 
-    public function __construct($course, $cm, $progress_data, $is_teacher = false) {
+    public function __construct($course, $cm, $progress_data, $is_teacher = false, $can_view_student_data = false) {
         $this->course = $course;
         $this->cm = $cm;
         $this->progress_data = $progress_data;
         $this->is_teacher = $is_teacher;
+        $this->can_view_student_data = $can_view_student_data;
     }
 
     public function export_for_template(renderer_base $output) {
         $data = new stdClass();
         $data->courseid = $this->course->id;
         $data->modid = $this->cm->id;
-        $data->is_teacher = $this->is_teacher;
+        $data->is_teacher = $this->is_teacher && $this->can_view_student_data;
+        $data->restricted = $this->is_teacher && !$this->can_view_student_data;
+
+        if ($data->restricted) {
+            $data->title = get_string('restricted_title', 'mod_selfdiscoverytracker');
+            $data->description = get_string('restricted_description', 'mod_selfdiscoverytracker');
+            return $data;
+        }
         
-        if ($this->is_teacher) {
+        if ($data->is_teacher) {
             $data->title = get_string('teacher_view_title', 'mod_selfdiscoverytracker');
             $data->block_url = (new moodle_url('/blocks/student_path/admin_view.php', ['cid' => $this->course->id]))->out(false);
             $data->str_view_full_report = get_string('view_full_report', 'mod_selfdiscoverytracker');

@@ -51,5 +51,17 @@ function xmldb_selfdiscoverytracker_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2026011601, 'selfdiscoverytracker');
     }
 
+    if ($oldversion < 2026072800) {
+        // Apply the institutional 0/5 scale to existing activities.
+        $DB->set_field('selfdiscoverytracker', 'grade', 5);
+
+        // Grade APIs cannot run while Moodle is upgrading. Queue the safe
+        // post-upgrade recalculation that changes historical partial grades to 0.
+        $task = new \mod_selfdiscoverytracker\task\regrade_all_instances();
+        \core\task\manager::queue_adhoc_task($task);
+
+        upgrade_mod_savepoint(true, 2026072800, 'selfdiscoverytracker');
+    }
+
     return true;
 }

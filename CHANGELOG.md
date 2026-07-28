@@ -5,6 +5,20 @@ Todos los cambios notables de este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere al [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.8] — 2026-07-28
+
+### Cambiado
+- La calificación es estrictamente binaria: se asigna **5** al completar las cinco exploraciones y **0** para cualquier progreso parcial.
+- La escala máxima se fija en 5 al crear, editar y sincronizar actividades.
+
+### Seguridad
+- Se incorporó la capacidad `viewstudentdata` para el acceso consolidado a información sensible.
+- Los docentes sin esa autorización ven un aviso de acceso restringido, sin progreso ni resultados de estudiantes.
+
+### Técnico
+- Se añadió una tarea ad hoc posterior a la actualización para recalcular de forma segura las calificaciones históricas según la regla 0/5.
+- Se completaron las cadenas de permisos en español e inglés.
+
 ## [1.0.7] — 2026-01-31
 
 ### Corregido

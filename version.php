@@ -10,11 +10,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2026013100; // YYYYMMDDXX (year, month, day, 2-digit version number).
+$plugin->version = 2026072800; // YYYYMMDDXX (year, month, day, 2-digit version number).
 $plugin->requires = 2022041900; // Moodle 4.0+
 $plugin->component = 'mod_selfdiscoverytracker';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.0.7';
+$plugin->release = '1.0.8';
 
 $plugin->dependencies = [
     'block_student_path' => 2026010800,

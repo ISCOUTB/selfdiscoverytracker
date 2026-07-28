@@ -38,6 +38,8 @@ class mod_selfdiscoverytracker_mod_form extends moodleform_mod {
         // Customization: Restrict grading to points only.
         $mform = $this->_form;
         if ($mform->elementExists('grade')) {
+            // This module always uses the institutional 0/5 scale.
+            $mform->setDefault('grade', 5);
             $gradeitem = $mform->getElement('grade');
             if ($gradeitem instanceof MoodleQuickForm_group) {
                 $elements = $gradeitem->getElements();
@@ -55,7 +57,7 @@ class mod_selfdiscoverytracker_mod_form extends moodleform_mod {
         $this->standard_coursemodule_elements();
 
         // Remove "Student must receive a grade" completion condition.
-        // We rely on "completionalltests" instead, as grades are progressive.
+        // We rely on "completionalltests" instead, as the grade is binary.
         if ($mform->elementExists('completionusegrade')) {
             $mform->removeElement('completionusegrade');
         }
